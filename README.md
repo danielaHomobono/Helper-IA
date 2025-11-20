@@ -2,20 +2,20 @@
 
 ¡Bienvenido/a al repositorio de nuestro proyecto para la Hackathon!
 
-##  Descripción del Proyecto
+## 📝 Descripción del Proyecto
 
 *(Aquí pueden escribir una breve descripción de la idea. ¿Qué problema resuelve? ¿Cuál es el objetivo principal?)*
 
 Ejemplo: "Helper-IA es una aplicación que busca [objetivo de la aplicación] utilizando [tecnología principal] para ayudar a los usuarios a [beneficio principal]."
 
-## Integrantes del Equipo
+## 🧑‍💻 Integrantes del Equipo
 
 *   Daniela Homobono
 *   *(Nombre del compañero 2)*
 *   *(Nombre del compañero 3)*
 *   *(etc...)*
 
-##  Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
 Aquí listaremos las tecnologías, lenguajes y herramientas que usaremos en el proyecto:
 
@@ -24,7 +24,7 @@ Aquí listaremos las tecnologías, lenguajes y herramientas que usaremos en el p
 *   **Base de Datos:** *(Ej: MongoDB, PostgreSQL)*
 *   **Otros:** *(Ej: APIs, librerías específicas)*
 
-##  Cómo Empezar
+## 🚀 Cómo Empezar
 
 Instrucciones para que cualquier miembro del equipo pueda clonar y ejecutar el proyecto en su máquina local.
 
