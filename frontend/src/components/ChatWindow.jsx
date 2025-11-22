@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { BsDiamondFill } from 'react-icons/bs';
+import { MdLockOpen, MdBeachAccess } from 'react-icons/md';
+import { IoDocumentText, IoBookSharp } from 'react-icons/io5';
 import Message from './Message';
-import './ChatWindow.css';
+import '../styles/components/ChatWindow.css';
 
 function ChatWindow({ messages, loading }) {
   const messagesEndRef = useRef(null);
@@ -13,30 +16,44 @@ function ChatWindow({ messages, loading }) {
     scrollToBottom();
   }, [messages]);
 
+  const quickActions = [
+    { icon: <MdLockOpen />, text: 'Restablecer mi contraseña', prompt: '¿Cómo puedo restablecer mi contraseña?' },
+    { icon: <MdBeachAccess />, text: 'Consultar mis vacaciones', prompt: '¿Cuántos días de vacaciones tengo disponibles?' },
+    { icon: <IoDocumentText />, text: 'Solicitar constancia laboral', prompt: 'Necesito una constancia laboral' },
+    { icon: <IoBookSharp />, text: 'Políticas de RH', prompt: '¿Dónde puedo consultar las políticas de Recursos Humanos?' }
+  ];
+
   return (
     <div className="chat-window">
       {messages.length === 0 && (
         <div className="welcome-message">
-          <h2>👋 ¡Hola!</h2>
-          <p>Soy Helper IA, tu asistente virtual de RH.</p>
-          <p>¿En qué puedo ayudarte hoy?</p>
+          <BsDiamondFill className="welcome-icon" />
+          <h2>¡Bienvenido a Helper IA!</h2>
+          <p>Soy tu asistente virtual de Recursos Humanos</p>
+          <p className="welcome-subtitle">Estoy aquí para ayudarte con tus consultas de RH las 24 horas del día</p>
+          
           <div className="suggestions">
-            <button>🔑 Restablecer contraseña</button>
-            <button>🏖️ Consultar vacaciones</button>
-            <button>📄 Solicitar constancia</button>
+            {quickActions.map((action, index) => (
+              <button key={index} className="suggestion-card">
+                <span className="suggestion-icon">{action.icon}</span>
+                <span className="suggestion-text">{action.text}</span>
+              </button>
+            ))}
           </div>
         </div>
       )}
 
-      {messages.map((message) => (
-        <Message key={message.id} message={message} />
-      ))}
+      <div className="messages-list">
+        {messages.map((message) => (
+          <Message key={message.id} message={message} />
+        ))}
+      </div>
 
       {loading && (
         <div className="typing-indicator">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span className="typing-dot"></span>
+          <span className="typing-dot"></span>
+          <span className="typing-dot"></span>
         </div>
       )}
 
