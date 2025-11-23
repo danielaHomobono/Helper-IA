@@ -11,8 +11,8 @@ Ejemplo: "Helper-IA es una aplicación que busca [objetivo de la aplicación] ut
 ## 🧑‍💻 Integrantes del Equipo
 
 *   Daniela Homobono
-*   *(Nombre del compañero 2)*
-*   *(Nombre del compañero 3)*
+*   Fernando Mubarqui
+*   Armando Lopez
 *   *(etc...)*
 
 ## 🛠️ Tecnologías Utilizadas
