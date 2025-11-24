@@ -1,0 +1,52 @@
+{
+  "name": "helper-ia-backend",
+  "version": "1.0.0",
+  "description": "Helper IA - Azure Functions Backend for HR Service Desk",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "dev": "func start --verbose --cors *",
+    "build": "npm run prestart",
+    "prestart": "npm run extensions:install",
+    "extensions:install": "func extensions install",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "deploy": "func azure functionapp publish helper-ia-functions"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "tedious": "^16.7.0",
+    "openai": "^4.24.7",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "azure-functions",
+    "openai",
+    "hr-service-desk",
+    "ai-assistant",
+    "chatbot",
+    "tedious",
+    "sql-server"
+  ],
+  "author": "Helper IA Team",
+  "license": "MIT",
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ]
+  }
+}
