@@ -1,6 +1,6 @@
 // API Configuration
 // Usar variable de entorno de Vite
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-equipo6-f6defvc0d3ezb6ff.centralus-01.azurewebsites.net';
 
 export const ENDPOINTS = {
   CHAT: '/api/chat',
