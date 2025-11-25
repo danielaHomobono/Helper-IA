@@ -10,11 +10,11 @@ export const API_URLS = {
 export const API_BASE_URL = API_URLS[ENV];
 
 export const ENDPOINTS = {
-  CHAT: '/chat',
-  FEEDBACK: '/feedback',
-  ANALYTICS: '/analytics',
-  ESCALATION: '/escalation',
-  HEALTH: '/health'
+  CHAT: '/api/chat',
+  FEEDBACK: '/api/feedback',
+  ANALYTICS: '/api/analytics',
+  ESCALATION: '/api/escalation',
+  HEALTH: '/api/health'
 };
 
 // Response Categories
