@@ -1,20 +1,13 @@
 // API Configuration
-const ENV = process.env.NODE_ENV || 'development';
-
-export const API_URLS = {
-  development: 'http://localhost:7071/api',
-  staging: 'https://helper-ia-staging.azurewebsites.net/api',
-  production: 'https://helper-ia.azurewebsites.net/api'
-};
-
-export const API_BASE_URL = API_URLS[ENV];
+// Usar variable de entorno de Vite
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const ENDPOINTS = {
-  CHAT: '/chat',
-  FEEDBACK: '/feedback',
-  ANALYTICS: '/analytics',
-  ESCALATION: '/escalation',
-  HEALTH: '/health'
+  CHAT: '/api/chat',
+  FEEDBACK: '/api/feedback',
+  ANALYTICS: '/api/analytics',
+  ESCALATION: '/api/escalation',
+  HEALTH: '/api/health'
 };
 
 // Response Categories
