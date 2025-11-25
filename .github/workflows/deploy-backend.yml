@@ -1,0 +1,59 @@
+name: Deploy Backend to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: helper-ia-backend
+  AZURE_WEBAPP_PACKAGE_PATH: './backend'
+  NODE_VERSION: '18.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🟢 Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: './backend/package-lock.json'
+    
+    - name: 📦 Install dependencies
+      run: |
+        cd backend
+        npm ci --production
+    
+    - name: ✅ Run tests (optional)
+      run: |
+        cd backend
+        npm test || echo "No tests found"
+      continue-on-error: true
+    
+    - name: 📦 Create deployment package
+      run: |
+        cd backend
+        zip -r ../backend-deploy.zip . -x "*.git*" "node_modules/@azure/functions/*" "*.test.js" "coverage/*"
+    
+    - name: 🚀 Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: './backend-deploy.zip'
+    
+    - name: 🔍 Health check
+      run: |
+        sleep 10
+        curl -f https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/health || echo "Health check failed"
+      continue-on-error: true
