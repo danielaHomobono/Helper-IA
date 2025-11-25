@@ -1,18 +1,6 @@
 // API Configuration
-<<<<<<< HEAD
-const ENV = process.env.NODE_ENV || 'development';
-
-export const API_URLS = {
-  development: 'http://localhost:3000/api',
-  staging: 'https://helper-ia-staging.azurewebsites.net/api',
-  production: 'https://helper-ia.azurewebsites.net/api'
-};
-
-export const API_BASE_URL = API_URLS[ENV];
-=======
 // Usar variable de entorno de Vite
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
->>>>>>> 7793451690122b27ed8205e6dcbbdd1ed3dff3f6
 
 export const ENDPOINTS = {
   CHAT: '/api/chat',
