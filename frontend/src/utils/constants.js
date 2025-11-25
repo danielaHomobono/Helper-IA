@@ -2,7 +2,7 @@
 const ENV = process.env.NODE_ENV || 'development';
 
 export const API_URLS = {
-  development: 'http://localhost:7071/api',
+  development: 'http://localhost:3000/api',
   staging: 'https://helper-ia-staging.azurewebsites.net/api',
   production: 'https://helper-ia.azurewebsites.net/api'
 };
