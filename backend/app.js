@@ -39,8 +39,17 @@ app.use(express.json());
 // NOTA: Para producción, se necesita Multi Tenant App ID
 const adapter = new BotFrameworkAdapter({
   appId: '', // Vacío para desarrollo sin autenticación
-  appPassword: ''
+  appPassword: '',
+  channelAuthTenant: ''
 });
+
+// Deshabilitar autenticación para desarrollo
+adapter.credentialsFactory = {
+  createCredentials: async () => ({
+    signRequest: async (req) => req,
+    getToken: async () => ''
+  })
+};
 
 // Manejo de errores del bot
 adapter.onTurnError = async (context, error) => {
