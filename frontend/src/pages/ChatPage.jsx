@@ -4,6 +4,7 @@ import { BsDiamondFill } from 'react-icons/bs';
 import { useChat } from '../hooks/useChat';
 import ChatWindow from '../components/ChatWindow';
 import MessageInput from '../components/MessageInput';
+import DarkModeToggle from '../components/DarkModeToggle';
 import '../styles/pages/ChatPage.css';
 
 function ChatPage() {
@@ -22,6 +23,7 @@ function ChatPage() {
           </div>
           
           <div className="header-actions">
+            <DarkModeToggle />
             <div className="status-indicator">
               <span className="status-dot"></span>
               En línea
@@ -33,7 +35,11 @@ function ChatPage() {
           </div>
         </div>
 
-        <ChatWindow messages={messages} loading={loading} />
+        <ChatWindow 
+          messages={messages} 
+          loading={loading}
+          onSendSuggestion={sendMessage}
+        />
         
         {error && (
           <div className="error-message">

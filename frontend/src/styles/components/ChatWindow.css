@@ -162,3 +162,51 @@
     font-size: 24px;
   }
 }
+
+/* Dark Mode Styles */
+:root.dark-mode .chat-window {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16161f 100%);
+}
+
+:root.dark-mode .welcome-message h2 {
+  color: #e0e0ff;
+}
+
+:root.dark-mode .welcome-message p {
+  color: #b8b8d8;
+}
+
+:root.dark-mode .welcome-subtitle {
+  color: #8888aa !important;
+}
+
+:root.dark-mode .welcome-icon {
+  color: #bf00ff;
+  filter: drop-shadow(0 4px 12px rgba(191, 0, 255, 0.6));
+}
+
+:root.dark-mode .suggestion-card {
+  background: #2a2a3e;
+  border: 2px solid #3a3a5e;
+  color: #e0e0ff;
+  box-shadow: 0 2px 8px rgba(191, 0, 255, 0.2);
+}
+
+:root.dark-mode .suggestion-icon {
+  color: #bf00ff;
+}
+
+:root.dark-mode .suggestion-card:hover {
+  border-color: #bf00ff;
+  background: linear-gradient(135deg, rgba(191, 0, 255, 0.1) 0%, rgba(123, 0, 255, 0.1) 100%);
+  box-shadow: 0 8px 20px rgba(191, 0, 255, 0.4);
+}
+
+:root.dark-mode .typing-indicator {
+  background: #2a2a3e;
+  box-shadow: 0 4px 6px rgba(191, 0, 255, 0.2);
+}
+
+:root.dark-mode .typing-dot {
+  background: #bf00ff;
+}

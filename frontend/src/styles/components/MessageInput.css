@@ -1,4 +1,4 @@
-.message-input-container {
+﻿.message-input-container {
   padding: 20px 24px;
   background: white;
   border-top: 1px solid #e2e8f0;
@@ -149,4 +149,57 @@
   .send-btn-text {
     display: none;
   }
+}
+
+/* Dark Mode Styles */
+:root.dark-mode .message-input-container {
+  background: #16161f;
+  border-top: 1px solid #3a3a5e;
+  box-shadow: 0 -4px 12px rgba(191, 0, 255, 0.1);
+}
+
+:root.dark-mode .input-field {
+  background: #2a2a3e;
+  border: 2px solid #3a3a5e;
+  color: #e0e0ff;
+}
+
+:root.dark-mode .input-field::placeholder {
+  color: #8888aa;
+}
+
+:root.dark-mode .input-field:focus {
+  border-color: #bf00ff;
+  background: #2a2a3e;
+  box-shadow: 0 0 0 3px rgba(191, 0, 255, 0.2);
+}
+
+:root.dark-mode .input-field:disabled {
+  background: #1a1a2e;
+  opacity: 0.5;
+}
+
+:root.dark-mode .send-btn {
+  background: linear-gradient(135deg, #bf00ff 0%, #7b00ff 100%);
+  box-shadow: 0 4px 15px rgba(191, 0, 255, 0.4);
+}
+
+:root.dark-mode .send-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(191, 0, 255, 0.6);
+}
+
+:root.dark-mode .char-counter {
+  color: #8888aa;
+}
+
+:root.dark-mode .quick-reply-btn {
+  background: #2a2a3e;
+  border: 1px solid #3a3a5e;
+  color: #b8b8d8;
+}
+
+:root.dark-mode .quick-reply-btn:hover {
+  border-color: #bf00ff;
+  color: #bf00ff;
+  background: rgba(191, 0, 255, 0.1);
 }
