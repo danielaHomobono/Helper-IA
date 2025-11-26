@@ -35,11 +35,11 @@ app.use(express.json());
 // CONFIGURACIÓN BOT DE TEAMS
 // ==========================================
 
-// Crear adaptador del bot con configuración para Single Tenant
+// Crear adaptador del bot - Sin autenticación para desarrollo
+// NOTA: Para producción, se necesita Multi Tenant App ID
 const adapter = new BotFrameworkAdapter({
-  appId: process.env.MicrosoftAppId || '',
-  appPassword: process.env.MicrosoftAppPassword || '',
-  channelAuthTenant: process.env.MicrosoftAppTenantId || ''
+  appId: '', // Vacío para desarrollo sin autenticación
+  appPassword: ''
 });
 
 // Manejo de errores del bot
