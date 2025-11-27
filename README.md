@@ -222,7 +222,7 @@ npm test
 ## 👥 Equipo
 
 - **Daniela Homobono** - Developer
-- _Agregar más miembros del equipo_
+- **Fernando Mubarqui** - Data Science/IA Engineer
 
 ## 📄 Licencia
 
