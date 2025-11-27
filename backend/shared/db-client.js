@@ -1,5 +1,36 @@
 const { Connection, Request, TYPES } = require('tedious');
 
+const inferTediousType = (value) => {
+  if (value === null || value === undefined) {
+    return { type: TYPES.NVarChar, normalized: null };
+  }
+
+  if (value?.type && Object.prototype.hasOwnProperty.call(value, 'value')) {
+    return { type: value.type, normalized: value.value };
+  }
+
+  if (value instanceof Date) {
+    return { type: TYPES.DateTime, normalized: value };
+  }
+
+  switch (typeof value) {
+    case 'number':
+      if (Number.isInteger(value)) {
+        return { type: TYPES.Int, normalized: value };
+      }
+      return { type: TYPES.Float, normalized: value };
+    case 'boolean':
+      return { type: TYPES.Bit, normalized: value };
+    default:
+      return { type: TYPES.NVarChar, normalized: value };
+  }
+};
+
+const addParameterToRequest = (request, name, value) => {
+  const { type, normalized } = inferTediousType(value);
+  request.addParameter(name, type, normalized);
+};
+
 class DatabaseClient {
   constructor() {
     this.config = {
@@ -58,7 +89,7 @@ class DatabaseClient {
 
       // Agregar parámetros
       params.forEach((param, index) => {
-        request.addParameter(`param${index}`, TYPES.NVarChar, param);
+        addParameterToRequest(request, `param${index}`, param);
       });
 
       request.on('row', (columns) => {
@@ -88,7 +119,7 @@ class DatabaseClient {
 
       // Agregar parámetros
       Object.keys(parameters).forEach(key => {
-        request.addParameter(key, TYPES.NVarChar, parameters[key]);
+        addParameterToRequest(request, key, parameters[key]);
       });
 
       request.on('row', (columns) => {
@@ -217,12 +248,14 @@ class DatabaseClient {
   }
 
   // Guardar feedback
-  async saveFeedback({ messageId, isHelpful, comment, timestamp }) {
+  async saveFeedbackRating({ conversationId = null, interactionId, rating, comment, metadata = null }) {
     const parameters = {
-      messageId,
-      isHelpful,
+      conversationId,
+      interactionId,
+      rating,
       comment: comment || null,
-      timestamp
+      metadata: metadata ? JSON.stringify(metadata) : null,
+      timestamp: new Date()
     };
 
     try {

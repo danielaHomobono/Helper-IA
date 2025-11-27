@@ -1,6 +1,9 @@
 const { app } = require('@azure/functions');
 const OpenAI = require('openai');
+const { v4: uuidv4 } = require('uuid');
 const { DatabaseClient } = require('../shared/db-client');
+const { CognitiveSearchClient } = require('../shared/search-client');
+const { buildKnowledgeSummary, validateAnswerAgainstDocuments } = require('../shared/validators');
 const { MASTER_PROMPT, CONTEXT_BUILDER } = require('../shared/prompts');
 
 const openai = new OpenAI({
@@ -24,20 +27,51 @@ app.http('chat', {
         };
       }
 
-      // Obtener historial de conversación
       const db = new DatabaseClient();
-      const history = await db.getConversationHistory(conversationId);
+      const searchClient = new CognitiveSearchClient();
+      const requestId = uuidv4();
+      const activeConversationId = conversationId || uuidv4();
 
-      // Construir contexto
-      const contextPrompt = CONTEXT_BUILDER(history);
+      const history = await db.getConversationHistory(activeConversationId, 15);
 
-      // Llamar a OpenAI
+      let searchResults = [];
+      if (searchClient.isConfigured()) {
+        const { results = [] } = await searchClient.searchTickets(message, { top: 5 });
+        searchResults = results;
+      }
+
+      const knowledgeSection = buildKnowledgeSummary(searchResults);
+      const systemMessages = [
+        { role: 'system', content: MASTER_PROMPT },
+        { role: 'system', content: CONTEXT_BUILDER(history) }
+      ];
+
+      if (searchResults.length) {
+        systemMessages.push({
+          role: 'system',
+          content: `Usa el siguiente contexto proveniente de tickets reales de Service Desk. 
+Si la evidencia contradice tu posible respuesta, regresa una respuesta con confianza baja y recomienda escalar:
+${knowledgeSection}`
+        });
+      }
+
+      await db.logInteraction({
+        conversationId: activeConversationId,
+        userId: userId || 'anonymous',
+        message,
+        timestamp: new Date(),
+        type: 'user',
+        metadata: {
+          requestId,
+          searchResults: searchResults.slice(0, 3)
+        }
+      });
+
       const startTime = Date.now();
       const completion = await openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: MASTER_PROMPT },
-          { role: 'system', content: contextPrompt },
+          ...systemMessages,
           { role: 'user', content: message }
         ],
         temperature: 0.7,
@@ -61,9 +95,29 @@ app.http('chat', {
         };
       }
 
-      // Guardar conversación
+      const validation = validateAnswerAgainstDocuments({
+        question: message,
+        answer: parsedResponse.response,
+        documents: searchResults
+      });
+
+      const aiInteractionId = await db.logInteraction({
+        conversationId: activeConversationId,
+        userId: 'helper-ia',
+        message: parsedResponse.response,
+        timestamp: new Date(),
+        type: 'ai',
+        metadata: {
+          requestId,
+          validation,
+          category: parsedResponse.category,
+          confidence: parsedResponse.confidence,
+          suggestedActions: parsedResponse.suggestedActions
+        }
+      });
+
       await db.saveConversation({
-        sessionId: conversationId,
+        sessionId: activeConversationId,
         userMessage: message,
         aiResponse: parsedResponse.response,
         confidenceScore: parsedResponse.confidence,
@@ -73,7 +127,7 @@ app.http('chat', {
 
       // Actualizar métricas
       await db.updateMetrics({
-        conversationId,
+        conversationId: activeConversationId,
         responseTime,
         category: parsedResponse.category,
         intent: parsedResponse.category,
@@ -84,7 +138,10 @@ app.http('chat', {
         status: 200,
         jsonBody: {
           ...parsedResponse,
-          conversationId,
+          conversationId: activeConversationId,
+          interactionId: aiInteractionId,
+          validation,
+          sources: validation.supportingDocuments,
           timestamp: new Date().toISOString()
         }
       };

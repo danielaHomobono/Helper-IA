@@ -1,0 +1,7 @@
+ticket_id,description,category,subcategory,entities,date,resolution,status,source
+TCK-0001,"No puedo ingresar al portal RH, el sistema dice credenciales inválidas.","ACCESS","PASSWORD_RESET","correo corporativo;portal rh","2025-02-14","Se validó identidad y se envió enlace de restablecimiento por SMS.","resolved","historical"
+TCK-0002,"Necesito saber cuántos días de vacaciones tengo disponibles para diciembre.","VACATIONS","BALANCE","empleado;vacaciones","2025-03-02","Se envió captura del portal RH con el saldo actualizado.","resolved","historical"
+TCK-0003,"Requiero una constancia laboral con sueldo para presentar en el banco.","CERTIFICATES","PAYSLIP","constancia laboral;banco","2025-04-21","Se generó constancia en PDF desde SAP y se compartió por email.","resolved","historical"
+TCK-0004,"¿Cuál es el proceso para reportar acoso laboral?","POLICY","COMPLIANCE","acoso laboral;política","2025-04-25","Se compartió política oficial y se abrió ticket con RRHH.","open","kb"
+TCK-0005,"El sistema me pide doble factor y mi celular se avarió.","ACCESS","MFA","celular;token","2025-05-03","Se registró dispositivo temporal y se habilitó autenticador alterno.","resolved","historical"
+

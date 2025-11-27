@@ -80,10 +80,89 @@ Para probar rápido, puedes comentar el código de BD:
 4. Actualizar credenciales en `local.settings.json`
 
 ### OPCIÓN C: Azure SQL Database
-
 1. Crear en Azure Portal
 2. Ejecutar scripts SQL
 3. Actualizar connection string
+
+---
+
+## 🧠 ETAPA 2 – Learning & Validation
+
+Para esta etapa necesitamos que el backend registre feedback y valide respuestas con datos reales.
+
+### 1. Azure SQL Serverless (General Purpose)
+1. Crea un **SQL Server** y una **Base de datos Serverless** (GP_S_Gen5_1 es suficiente para hackathon).
+2. Activa *auto-pause* ≥ 1h para no pagar cuando no se use.
+3. Ejecuta:
+   - `database/schema/01_create_tables.sql`
+   - `database/stored-procedures/01_core_procedures.sql`
+4. Carga tus 1000 tickets:
+   - Copia el CSV a tu storage / disco.
+   - Edita la ruta en `database/seed/02_load_tickets.sql`.
+   - Ejecuta el script (usa `02_tickets_sample.csv` como referencia).
+5. Anota servidor, usuario y password para `local.settings.json` o para el Function App.
+
+### 2. Azure Cognitive Search (Free tier si está disponible)
+1. Crea un recurso **Cognitive Search** (SKU Free o Basic).
+2. Carga el dataset desde SQL o CSV y crea un índice `tickets-index` con campos:
+   - `ticket_id` (Key)
+   - `description`, `resolution` (searchable/content)
+   - `category`, `subcategory`, `status`, `source`
+   - `embedding` (opcional si quieres vector search)
+3. (Opcional) Crea configuración semántica para mejores resultados.
+4. Guarda **endpoint**, **API key** y **index name** para las variables de entorno.
+
+### 3. Variables nuevas del backend
+```json
+{
+  "COGNITIVE_SEARCH_ENDPOINT": "https://tuinstancia.search.windows.net",
+  "COGNITIVE_SEARCH_API_KEY": "api-key-admin",
+  "COGNITIVE_SEARCH_INDEX": "tickets-index",
+  "COGNITIVE_SEARCH_API_VERSION": "2024-07-01-Preview"
+}
+```
+
+### 4. Nuevos endpoints (Function App)
+| Endpoint | Método | Descripción |
+|----------|--------|-------------|
+| `/api/interaction` | POST | Usa OpenAI + Cognitive Search y guarda la interacción |
+| `/api/feedback` | POST | Registra un rating 1-3 asociado al `interactionId` |
+
+**Ejemplo /api/interaction**
+```jsonc
+{
+  "message": "Necesito mi saldo de vacaciones",
+  "conversationId": "uuid-123"
+}
+```
+
+Respuesta:
+```jsonc
+{
+  "response": "Puedes consultar tu saldo en ...",
+  "interactionId": 42,
+  "validation": {
+    "confidence": "high",
+    "reason": "Coincide con el ticket TCK-0002",
+    "supportingDocuments": [
+      { "ticketId": "TCK-0002", "score": "1.12" }
+    ]
+  },
+  "sources": [
+    { "ticketId": "TCK-0002", "category": "VACATIONS", "snippet": "..." }
+  ]
+}
+```
+
+**Ejemplo /api/feedback**
+```json
+{
+  "interactionId": 42,
+  "conversationId": "uuid-123",
+  "rating": 3,
+  "comment": "Respuesta perfecta"
+}
+```
 
 ---
 

@@ -5,7 +5,7 @@ import { IoDocumentText, IoBookSharp, IoChatbubble } from 'react-icons/io5';
 import { MESSAGE_TYPES } from '../utils/constants';
 import '../styles/components/Message.css';
 
-function Message({ message }) {
+function Message({ message, onFeedback }) {
   const isUser = message.type === MESSAGE_TYPES.USER;
 
   const getConfidenceClass = (confidence) => {
@@ -33,6 +33,22 @@ function Message({ message }) {
     return icons[category] || <IoChatbubble />;
   };
 
+  const ratingOptions = [
+    { value: 1, label: 'Necesita revisión' },
+    { value: 2, label: 'Útil' },
+    { value: 3, label: 'Excelente' }
+  ];
+
+  const handleFeedback = (value) => {
+    if (!message.interactionId || !onFeedback) return;
+    if (message.userRating === value) return;
+
+    onFeedback({
+      interactionId: message.interactionId,
+      rating: value
+    });
+  };
+
   return (
     <div className={`message ${isUser ? 'user-message' : 'ai-message'}`}>
       {!isUser && (
@@ -53,6 +69,32 @@ function Message({ message }) {
           <div className="message-category">
             <span>{getCategoryIcon(message.category)}</span>
             {message.category.replace(/_/g, ' ')}
+          </div>
+        )}
+        
+        {!isUser && message.validation && (
+          <div className={`validation-badge ${message.validation.confidence}`}>
+            <span className="validation-status">
+              Validación: {message.validation.confidence?.toUpperCase() || 'N/A'}
+            </span>
+            <span className="validation-reason">{message.validation.reason}</span>
+          </div>
+        )}
+
+        {!isUser && message.sources && message.sources.length > 0 && (
+          <div className="sources-section">
+            <span className="sources-title">Fuentes:</span>
+            <div className="sources-pills">
+              {message.sources.map((source) => (
+                <span
+                  key={source.ticketId}
+                  className="source-pill"
+                  title={source.snippet}
+                >
+                  {source.ticketId} {source.category ? `(${source.category})` : ''}
+                </span>
+              ))}
+            </div>
           </div>
         )}
         
@@ -79,6 +121,37 @@ function Message({ message }) {
             <span className={`confidence-percentage ${getConfidenceClass(message.confidence)}`}>
               {(message.confidence * 100).toFixed(0)}%
             </span>
+          </div>
+        )}
+        {!isUser && message.interactionId && onFeedback && (
+          <div className="feedback-wrapper">
+            <span className="feedback-label">Califica la respuesta</span>
+            <div className="feedback-buttons">
+              {ratingOptions.map((option) => (
+                <button
+                  key={option.value}
+                  className={`feedback-btn ${message.userRating === option.value ? 'active' : ''}`}
+                  onClick={() => handleFeedback(option.value)}
+                  disabled={
+                    message.feedbackStatus === 'saving' ||
+                    message.feedbackStatus === 'success'
+                  }
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            {message.feedbackStatus === 'saving' && (
+              <span className="feedback-status saving">Enviando tu feedback…</span>
+            )}
+            {message.feedbackStatus === 'success' && (
+              <span className="feedback-status success">¡Gracias por ayudarnos a mejorar!</span>
+            )}
+            {message.feedbackStatus === 'error' && (
+              <span className="feedback-status error">
+                {message.feedbackError || 'No se pudo guardar tu feedback.'}
+              </span>
+            )}
           </div>
         )}
       </div>

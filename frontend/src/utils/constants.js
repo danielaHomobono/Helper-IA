@@ -3,6 +3,7 @@
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-equipo6-f6defvc0d3ezb6ff.centralus-01.azurewebsites.net';
 
 export const ENDPOINTS = {
+  INTERACTION: '/api/interaction',
   CHAT: '/api/chat',
   FEEDBACK: '/api/feedback',
   ANALYTICS: '/api/analytics',

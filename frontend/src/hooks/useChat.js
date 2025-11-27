@@ -27,7 +27,7 @@ export const useChat = () => {
 
     try {
       // Llamar al backend
-      const response = await ApiClient.post(ENDPOINTS.CHAT, {
+      const response = await ApiClient.post(ENDPOINTS.INTERACTION || ENDPOINTS.CHAT, {
         message,
         conversationId,
         userId: 'anonymous'
@@ -41,7 +41,10 @@ export const useChat = () => {
         category: response.category,
         confidence: response.confidence,
         suggestedActions: response.suggestedActions,
-        timestamp: response.timestamp
+        timestamp: response.timestamp,
+        interactionId: response.interactionId,
+        validation: response.validation,
+        sources: response.sources
       };
 
       setMessages(prev => [...prev, aiMessage]);
@@ -51,6 +54,49 @@ export const useChat = () => {
       console.error('Error:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const sendFeedback = async ({ interactionId, rating, comment }) => {
+    if (!interactionId || !rating) return;
+
+    setMessages(prev =>
+      prev.map((msg) =>
+        msg.interactionId === interactionId
+          ? { ...msg, feedbackStatus: 'saving', feedbackError: null }
+          : msg
+      )
+    );
+
+    try {
+      await ApiClient.post(ENDPOINTS.FEEDBACK, {
+        interactionId,
+        conversationId,
+        rating,
+        comment
+      });
+
+      setMessages(prev =>
+        prev.map((msg) =>
+          msg.interactionId === interactionId
+            ? { ...msg, userRating: rating, feedbackStatus: 'success' }
+            : msg
+        )
+      );
+    } catch (error) {
+      console.error('Error enviando feedback:', error);
+      setMessages(prev =>
+        prev.map((msg) =>
+          msg.interactionId === interactionId
+            ? {
+                ...msg,
+                feedbackStatus: 'error',
+                feedbackError: 'No se pudo guardar tu feedback. Intenta nuevamente.'
+              }
+            : msg
+        )
+      );
+      setError('No se pudo guardar tu feedback. Intenta nuevamente.');
     }
   };
 
@@ -65,6 +111,7 @@ export const useChat = () => {
     error,
     sendMessage,
     clearChat,
+    sendFeedback,
     conversationId
   };
 };

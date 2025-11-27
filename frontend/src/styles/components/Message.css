@@ -72,6 +72,130 @@
   white-space: pre-wrap;
 }
 
+.validation-badge {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: #f7fafc;
+  border-left: 4px solid var(--primary);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.validation-badge.high {
+  border-color: var(--success);
+}
+
+.validation-badge.medium {
+  border-color: var(--warning);
+}
+
+.validation-badge.low {
+  border-color: var(--error);
+}
+
+.validation-status {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.validation-reason {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.sources-section {
+  margin-top: 12px;
+}
+
+.sources-title {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.sources-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.source-pill {
+  background: #edf2f7;
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  border: 1px solid #e2e8f0;
+}
+
+.feedback-wrapper {
+  margin-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 12px;
+}
+
+.feedback-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.feedback-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.feedback-btn {
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  background: white;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.feedback-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.feedback-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  cursor: default;
+}
+
+.feedback-status {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.feedback-status.saving {
+  color: var(--warning);
+}
+
+.feedback-status.success {
+  color: var(--success);
+}
+
+.feedback-status.error {
+  color: var(--error);
+}
+
 .suggested-actions {
   margin-top: 16px;
   padding-top: 16px;

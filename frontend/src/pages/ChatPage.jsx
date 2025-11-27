@@ -8,7 +8,7 @@ import DarkModeToggle from '../components/DarkModeToggle';
 import '../styles/pages/ChatPage.css';
 
 function ChatPage() {
-  const { messages, loading, error, sendMessage, clearChat } = useChat();
+  const { messages, loading, error, sendMessage, clearChat, sendFeedback } = useChat();
 
   return (
     <div className="chat-page">
@@ -39,6 +39,7 @@ function ChatPage() {
           messages={messages} 
           loading={loading}
           onSendSuggestion={sendMessage}
+          onFeedback={sendFeedback}
         />
         
         {error && (

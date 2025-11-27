@@ -59,16 +59,18 @@ GO
 
 -- SP: Guardar feedback
 CREATE PROCEDURE sp_save_feedback
-    @messageId INT,
-    @isHelpful BIT,
+    @conversationId INT = NULL,
+    @interactionId INT,
+    @rating TINYINT,
     @comment NVARCHAR(MAX) = NULL,
+    @metadata NVARCHAR(MAX) = NULL,
     @timestamp DATETIME
 AS
 BEGIN
     SET NOCOUNT ON;
     
-    INSERT INTO feedback (message_id, is_helpful, comment, timestamp)
-    VALUES (@messageId, @isHelpful, @comment, @timestamp);
+    INSERT INTO feedback (conversation_id, interaction_id, rating, comment, metadata, created_at)
+    VALUES (@conversationId, @interactionId, @rating, @comment, @metadata, @timestamp);
     
     SELECT SCOPE_IDENTITY() AS feedbackId;
 END;
@@ -106,10 +108,10 @@ BEGIN
         (SELECT 
             CASE 
                 WHEN COUNT(*) = 0 THEN 0
-                ELSE CAST(SUM(CASE WHEN is_helpful = 1 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) 
+                ELSE CAST(SUM(CASE WHEN rating >= 2 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*)
             END
          FROM feedback
-         WHERE CAST(timestamp AS DATE) = CAST(GETDATE() AS DATE)) AS satisfactionRate,
+         WHERE CAST(created_at AS DATE) = CAST(GETDATE() AS DATE)) AS satisfactionRate,
         
         -- Tiempo promedio de respuesta
         (SELECT AVG(response_time) FROM metrics 

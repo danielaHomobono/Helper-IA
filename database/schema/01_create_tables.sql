@@ -62,15 +62,18 @@ CREATE TABLE escalation_tickets (
     INDEX idx_created_at (created_at)
 );
 
--- Tabla de feedback
 CREATE TABLE feedback (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    message_id INT,
-    is_helpful BIT NOT NULL,
+    conversation_id INT NULL,
+    interaction_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 3),
     comment NVARCHAR(MAX),
-    timestamp DATETIME NOT NULL DEFAULT GETDATE(),
-    FOREIGN KEY (message_id) REFERENCES conversations(id),
-    INDEX idx_timestamp (timestamp)
+    metadata NVARCHAR(MAX),
+    created_at DATETIME NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id),
+    FOREIGN KEY (interaction_id) REFERENCES interactions(id),
+    INDEX idx_feedback_interaction (interaction_id),
+    INDEX idx_feedback_created_at (created_at)
 );
 
 -- Tabla de métricas
@@ -85,6 +88,24 @@ CREATE TABLE metrics (
     FOREIGN KEY (conversation_id) REFERENCES conversations(id),
     INDEX idx_timestamp (timestamp),
     INDEX idx_category (category)
+);
+
+-- Tabla de tickets históricos (dataset de 1000 casos)
+CREATE TABLE tickets_dataset (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    ticket_id VARCHAR(50) UNIQUE NOT NULL,
+    description NVARCHAR(MAX) NOT NULL,
+    category VARCHAR(100),
+    subcategory VARCHAR(100),
+    entities NVARCHAR(MAX),
+    [date] DATETIME,
+    resolution NVARCHAR(MAX),
+    status VARCHAR(50),
+    source NVARCHAR(100),
+    embedding VARBINARY(MAX) NULL,
+    INDEX idx_tickets_category (category),
+    INDEX idx_tickets_subcategory (subcategory),
+    INDEX idx_tickets_status (status)
 );
 
 -- Tabla de usuarios (opcional para futuro)

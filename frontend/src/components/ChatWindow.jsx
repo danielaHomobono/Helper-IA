@@ -5,7 +5,7 @@ import { IoDocumentText, IoBookSharp } from 'react-icons/io5';
 import Message from './Message';
 import '../styles/components/ChatWindow.css';
 
-function ChatWindow({ messages, loading, onSendSuggestion }) {
+function ChatWindow({ messages, loading, onSendSuggestion, onFeedback }) {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -55,7 +55,7 @@ function ChatWindow({ messages, loading, onSendSuggestion }) {
 
       <div className="messages-list">
         {messages.map((message) => (
-          <Message key={message.id} message={message} />
+          <Message key={message.id} message={message} onFeedback={onFeedback} />
         ))}
       </div>
 

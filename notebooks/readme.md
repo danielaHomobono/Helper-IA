@@ -41,3 +41,38 @@ Tiene como objetivo dejar un dataset estructurado que pueda alimentar un asisten
 ## Nota
 Este notebook no modifica los archivos originales del repositorio; únicamente genera una versión procesada apta para entrenamiento y prototipado. 
 
+---
+
+## Exploración (`EDA_data_clean.ipynb`)
+
+Notebook importado desde [fermuba/Helper-IA](https://github.com/fermuba/Helper-IA/blob/main/notebooks/EDA_data_clean.ipynb) para documentar la exploración de `data/data_clean.csv`. Genera métricas en español no técnico y gráficos listos para dashboards de Azure.
+
+### Dependencias
+
+- Python 3.9+
+- `pandas`, `matplotlib`, `seaborn`, `notebook`
+
+Se recomienda usar el entorno virtual del repo:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install pandas matplotlib seaborn notebook
+```
+
+### Ejecución
+
+```powershell
+jupyter notebook notebooks/EDA_data_clean.ipynb
+```
+
+El notebook detecta la ruta del proyecto automáticamente, por lo que puede correrse desde VS Code, nbconvert o Colab. Lee `data/data_clean.csv` y escribe todos los artefactos en `outputs/`:
+
+- `metadata.json`
+- `category_distribution.png`
+- `sub_category_distribution.png`
+- `ticket_len_histogram.png`
+- `ticket_len_boxplot.png`
+- `top_10_entities_distribution.png`
+- `category_entity_cooccurrence_heatmap.png`
+
