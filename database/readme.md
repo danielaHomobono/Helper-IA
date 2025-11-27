@@ -88,56 +88,6 @@ Y este README mostrará la imagen automáticamente:
 
 ---
 
-## 🛠️ Script SQL — Creación de Tablas
-
-```sql
--- ======================================================
--- TABLA PRINCIPAL: TICKETS
--- ======================================================
-
-CREATE TABLE Tickets (
-    ticket_id        INT             NOT NULL PRIMARY KEY,
-    ticket_text      NVARCHAR(MAX)   NOT NULL,
-    category         VARCHAR(100)    NULL,
-    sub_category     VARCHAR(100)    NULL,
-    label            VARCHAR(200)    NULL,
-    status           VARCHAR(50)     NULL,
-    user_feedback    INT             NULL,
-    created_at       DATETIME        NOT NULL
-);
-
-CREATE INDEX idx_tickets_category
-    ON Tickets(category, sub_category);
-
-CREATE INDEX idx_tickets_status
-    ON Tickets(status);
-
--- ======================================================
--- TABLA SECUNDARIA: TICKET ENTITIES
--- ======================================================
-
-CREATE TABLE TicketEntities (
-    entity_id     INT IDENTITY(1,1) PRIMARY KEY,
-    ticket_id     INT             NOT NULL,
-    entity_label  VARCHAR(100)    NOT NULL,
-    entity_start  INT             NULL,
-    entity_end    INT             NULL,
-    entity_text   NVARCHAR(MAX)   NULL,
-
-    CONSTRAINT FK_TicketEntities_Tickets
-        FOREIGN KEY (ticket_id) REFERENCES Tickets(ticket_id)
-        ON DELETE CASCADE
-);
-
-CREATE INDEX idx_entities_ticket
-    ON TicketEntities(ticket_id);
-
-CREATE INDEX idx_entities_label
-    ON TicketEntities(entity_label);
-```
-
----
-
 ## 📦 Próximas extensiones posibles
 
 El diseño permite agregar con facilidad nuevas tablas, por ejemplo:
