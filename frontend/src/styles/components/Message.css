@@ -218,3 +218,67 @@
     font-size: 14px;
   }
 }
+
+/* Dark Mode Styles */
+:root.dark-mode .ai-message .message-content {
+  background: #2a2a3e;
+  color: #e0e0ff;
+  border: 1px solid #3a3a5e;
+  box-shadow: 0 4px 6px rgba(191, 0, 255, 0.2);
+}
+
+:root.dark-mode .user-message .message-content {
+  background: linear-gradient(135deg, #bf00ff 0%, #7b00ff 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(191, 0, 255, 0.4);
+}
+
+:root.dark-mode .message-avatar {
+  box-shadow: 0 2px 8px rgba(191, 0, 255, 0.5);
+}
+
+:root.dark-mode .user-message .message-avatar {
+  background: linear-gradient(135deg, #ff00ff 0%, #bf00ff 100%);
+}
+
+:root.dark-mode .ai-message .message-avatar {
+  background: linear-gradient(135deg, #bf00ff 0%, #7b00ff 100%);
+}
+
+:root.dark-mode .action-btn {
+  background: #1a1a2e;
+  border: 1px solid #3a3a5e;
+  color: #bf00ff;
+}
+
+:root.dark-mode .action-btn:hover {
+  background: #bf00ff;
+  color: white;
+  border-color: #bf00ff;
+  box-shadow: 0 0 15px rgba(191, 0, 255, 0.5);
+}
+
+:root.dark-mode .suggested-actions {
+  border-top: 1px solid #3a3a5e;
+}
+
+:root.dark-mode .actions-title {
+  color: #b8b8d8;
+}
+
+:root.dark-mode .message-timestamp {
+  color: #8888aa;
+}
+
+:root.dark-mode .message-category {
+  background: rgba(191, 0, 255, 0.2);
+  color: #ff00ff;
+}
+
+:root.dark-mode .confidence-bar {
+  background: #2a2a3e;
+}
+
+:root.dark-mode .confidence-label {
+  color: #8888aa;
+}

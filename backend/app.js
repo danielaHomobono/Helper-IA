@@ -35,11 +35,21 @@ app.use(express.json());
 // CONFIGURACIÓN BOT DE TEAMS
 // ==========================================
 
-// Crear adaptador del bot
+// Crear adaptador del bot - Sin autenticación para desarrollo
+// NOTA: Para producción, se necesita Multi Tenant App ID
 const adapter = new BotFrameworkAdapter({
-  appId: process.env.MicrosoftAppId || '',
-  appPassword: process.env.MicrosoftAppPassword || ''
+  appId: '', // Vacío para desarrollo sin autenticación
+  appPassword: '',
+  channelAuthTenant: ''
 });
+
+// Deshabilitar autenticación para desarrollo
+adapter.credentialsFactory = {
+  createCredentials: async () => ({
+    signRequest: async (req) => req,
+    getToken: async () => ''
+  })
+};
 
 // Manejo de errores del bot
 adapter.onTurnError = async (context, error) => {

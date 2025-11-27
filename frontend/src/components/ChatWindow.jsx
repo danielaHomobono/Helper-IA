@@ -5,7 +5,7 @@ import { IoDocumentText, IoBookSharp } from 'react-icons/io5';
 import Message from './Message';
 import '../styles/components/ChatWindow.css';
 
-function ChatWindow({ messages, loading }) {
+function ChatWindow({ messages, loading, onSendSuggestion }) {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -23,6 +23,12 @@ function ChatWindow({ messages, loading }) {
     { icon: <IoBookSharp />, text: 'Políticas de RH', prompt: '¿Dónde puedo consultar las políticas de Recursos Humanos?' }
   ];
 
+  const handleSuggestionClick = (prompt) => {
+    if (onSendSuggestion) {
+      onSendSuggestion(prompt);
+    }
+  };
+
   return (
     <div className="chat-window">
       {messages.length === 0 && (
@@ -34,7 +40,11 @@ function ChatWindow({ messages, loading }) {
           
           <div className="suggestions">
             {quickActions.map((action, index) => (
-              <button key={index} className="suggestion-card">
+              <button 
+                key={index} 
+                className="suggestion-card"
+                onClick={() => handleSuggestionClick(action.prompt)}
+              >
                 <span className="suggestion-icon">{action.icon}</span>
                 <span className="suggestion-text">{action.text}</span>
               </button>
