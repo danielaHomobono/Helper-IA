@@ -91,12 +91,3 @@ El diseño permite agregar con facilidad nuevas tablas, por ejemplo:
 - `TicketHistory` (trazabilidad de cambios)
 
 ---
-
-## 📚 Notas finales
-
-- La estructura está optimizada para análisis, dashboards y uso con IA.
-- El modelo permite mantener los tickets limpios, estructurados y extensibles.
-- El diseño respeta buenas prácticas de bases transaccionales en Azure SQL.
-
----
-
