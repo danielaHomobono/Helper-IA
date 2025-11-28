@@ -28,15 +28,7 @@ async function callPhi4(message) {
   if (!message) throw new Error("Falta el mensaje para Phi-4");
 
   const completion = await phi4Client.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: `Eres el "Agente Base". 
-                Tu objetivo es responder consultas generales de forma rápida y clara.
-                Siempre indicas en tu respuesta: "Agente que respondió: Agente Base".`
-      },
-      { role: "user", content: message }
-    ],
+    messages: [{ role: "user", content: message }],
   });
 
   return completion.choices[0].message.content;
@@ -46,15 +38,7 @@ async function callPhi4Reasoning(message) {
   if (!message) throw new Error("Falta el mensaje para Phi-4-Reasoning");
 
   const completion = await phi4ReasoningClient.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: `Eres el "Agente Experto Supervisor".
-                Tu tarea es analizar preguntas complejas, ambiguas o de baja confianza detectada.
-                Siempre indicas en tu respuesta: "Agente que respondió: Agente Experto Supervisor".`
-      },
-      { role: "user", content: message }
-    ],
+    messages: [{ role: "user", content: message }],
   });
 
   return completion.choices[0].message.content;
