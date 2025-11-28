@@ -7,7 +7,8 @@ export const ENDPOINTS = {
   FEEDBACK: '/api/feedback',
   ANALYTICS: '/api/analytics',
   ESCALATION: '/api/escalation',
-  HEALTH: '/api/health'
+  HEALTH: '/api/health',
+  SEARCH: '/api/search'
 };
 
 // Response Categories
