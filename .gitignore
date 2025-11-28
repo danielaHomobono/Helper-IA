@@ -251,6 +251,7 @@ error.log
 # Datos de prueba sensibles
 /database/seed/production_data.sql
 /database/backups/
+/helpvenv/
 
 # Logs de la aplicación
 /logs/
