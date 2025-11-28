@@ -26,6 +26,10 @@ class ApiClient {
     }
   }
 
+  async searchTickets(query) {
+    return await this.post(ENDPOINTS.SEARCH, { query });
+  }
+
   async get(endpoint) {
     try {
       const response = await fetch(`${this.baseURL}${endpoint}`, {

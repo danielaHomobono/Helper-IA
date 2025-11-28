@@ -33,7 +33,7 @@ function ChatWindow({ messages, loading, onSendSuggestion }) {
     <div className="chat-window">
       {messages.length === 0 && (
         <div className="welcome-message">
-          <BsDiamondFill className="welcome-icon" />
+          <img src="/logo1.png" alt="Logo" className="welcome-icon" style={{height: '2.5em', marginBottom: '0'}} />
           <h2>¡Bienvenido a Helper IA!</h2>
           <p>Soy tu asistente virtual de Recursos Humanos</p>
           <p className="welcome-subtitle">Estoy aquí para ayudarte con tus consultas de RH las 24 horas del día</p>

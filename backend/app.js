@@ -71,7 +71,9 @@ app.get('/health', (req, res) => {
 
 // Endpoint para el frontend React
 const phi4Router = require('./phi4');
+const searchRouter = require('./search');
 app.use('/api', phi4Router);
+app.use('/api', searchRouter);
 
 // Endpoint para Microsoft Teams
 app.post('/api/messages', async (req, res) => {
